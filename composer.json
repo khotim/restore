@@ -1,0 +1,19 @@
+{
+    "name": "khotim/restore",
+    "description": "RESTful API Service for Order Transaction",
+    "keywords": ["micro-service", "service", "json", "yii2"],
+    "homepage": "http://www.timicron.com/",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "~2.0.5"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}
