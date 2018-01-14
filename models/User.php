@@ -7,6 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\filters\RateLimitInterface;
 use yii\web\IdentityInterface;
+use yii\web\GoneHttpException;
 
 /**
  * User model.
@@ -15,6 +16,8 @@ class User extends ActiveRecord implements IdentityInterface, RateLimitInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 11;
+    
+    public $rateLimit = 600;
 
     /**
      * @inheritdoc
@@ -56,14 +59,14 @@ class User extends ActiveRecord implements IdentityInterface, RateLimitInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        $access_token = AccessTokens::findOne(['token' => $token]);
+        $model = AccessToken::findOne(['token' => $token]);
         
-        if ($access_token) {
-            if ($access_token->expires_at < time()) {
-                Yii::$app->api->sendFailedResponse('Access token expired');
+        if ($model) {
+            if ($model->expired_at < time()) {
+                throw new GoneHttpException('Access token has expired.');
             }
 
-            return static::findOne(['id' => $access_token->user_id]);
+            return static::findOne(['id' => $model->user_id]);
         }
         
         return false;

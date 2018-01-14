@@ -2,6 +2,9 @@
 namespace api\v1\controllers;
 
 use Yii;
+use yii\filters\auth\CompositeAuth;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\auth\QueryParamAuth;
 use yii\helpers\Url;
 use yii\rest\Controller;
 use yii\web\NotFoundHttpException;
@@ -18,18 +21,30 @@ class SiteController extends Controller
      */
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => \yii\filters\VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['GET'],
-                    'authorize' => ['POST'],
-                    'register' => ['POST'],
-                    'accesstoken' => ['POST'],
-                    'profile' => ['GET'],
-                ],
+        
+        $behaviors = parent::behaviors();
+        // use query parameter or OAuth2 HTTP Bearer Tokens for authentication
+        $behaviors['authenticator'] = [
+            'class' => CompositeAuth::className(),
+            'authMethods' => [
+                HttpBearerAuth::className(),
+                ['class' => QueryParamAuth::className(), 'tokenParam' => 'access_token']
             ],
+            'only' => ['profile']
         ];
+        
+        $behaviors['verbs'] = [
+            'class' => \yii\filters\VerbFilter::className(),
+            'actions' => [
+                'logout' => ['GET'],
+                'authorize' => ['POST'],
+                'register' => ['POST'],
+                'accesstoken' => ['POST'],
+                'profile' => ['GET'],
+            ]
+        ];
+        
+        return $behaviors;
     }
     
     /**
@@ -60,7 +75,9 @@ class SiteController extends Controller
      */
     public function actionProfile()
     {
-        return Yii::$app->user->identity;
+        $identity = Yii::$app->user->identity;
+        
+        return $identity ?: 'No profile was found.';
     }
     
     /**
@@ -136,7 +153,7 @@ class SiteController extends Controller
         $access_token = $headers->get('x-access-token');
         
         if(!$access_token){
-            $access_token = Yii::$app->getRequest()->getQueryParam('access-token');
+            $access_token = Yii::$app->getRequest()->getQueryParam('access_token');
         }
         
         $model = AccessToken::findOne(['token' => $access_token]);
