@@ -72,6 +72,12 @@ return [
                 '/v1/logout' => 'v1/site/logout',
                 '/v1/profile' => 'v1/site/profile',
                 '/v1/register' => 'v1/site/register',
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => [
+                        'v1/admin/product'
+                    ]
+                ],
             ]
         ]
     ]
