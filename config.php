@@ -52,6 +52,7 @@ return [
             ]
         ],
         'user' => [
+            'identityClass' => 'api\v1\models\User',
             'enableSession' => false,
             'loginUrl' => null
         ],
