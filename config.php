@@ -79,6 +79,15 @@ return [
                         'v1/admin/product'
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/catalogue',
+                    'extraPatterns' => [
+                        'GET' => 'index',
+                        'PUT {id}' => 'create',
+                        'GET {id}' => 'view',
+                    ]
+                ]
             ]
         ]
     ]
