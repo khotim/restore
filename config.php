@@ -75,6 +75,7 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => [
+                        'v1/admin/coupon',
                         'v1/admin/product'
                     ]
                 ],
