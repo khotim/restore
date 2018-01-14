@@ -19,7 +19,6 @@ return [
         'v1' => ['class' => 'api\v1\Module']
     ],
     'components' => [
-        
         'db' => [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=restore',
@@ -76,6 +75,7 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => [
                         'v1/admin/coupon',
+                        'v1/admin/logistic',
                         'v1/admin/product'
                     ]
                 ],
