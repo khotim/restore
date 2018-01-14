@@ -8,6 +8,8 @@ return [
     'basePath' => __DIR__,
     // this is where the application will find all controllers
     'controllerNamespace' => 'restore\controllers',
+    // local time zone setting
+    'timeZone' => 'Asia/Jakarta',
     // set an alias to enable autoloading of classes from the 'restore' namespace
     'aliases' => [
         '@restore' => __DIR__,
@@ -35,7 +37,7 @@ return [
             'format' => Response::FORMAT_JSONP,
             'on beforeSend' => function ($event) {
                 $response = $event->sender;
-                if ($response->data !== null && Yii::$app->request->get('suppress_response_code')) {
+                if ($response->data !== null) {
                     $response->data = [
                         'success' => $response->isSuccessful,
                         'data' => $response->data,
@@ -65,6 +67,11 @@ return [
             'showScriptName' => false,
             'rules' => [
                 '/' => 'site/index',
+                '/v1/accesstoken' => 'v1/site/accesstoken',
+                '/v1/authorize' => 'v1/site/authorize',
+                '/v1/logout' => 'v1/site/logout',
+                '/v1/profile' => 'v1/site/profile',
+                '/v1/register' => 'v1/site/register',
             ]
         ]
     ]

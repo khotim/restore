@@ -56,6 +56,16 @@ class User extends ActiveRecord implements IdentityInterface, RateLimitInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
+        $access_token = AccessTokens::findOne(['token' => $token]);
+        
+        if ($access_token) {
+            if ($access_token->expires_at < time()) {
+                Yii::$app->api->sendFailedResponse('Access token expired');
+            }
+
+            return static::findOne(['id' => $access_token->user_id]);
+        }
+        
         return false;
     }
 

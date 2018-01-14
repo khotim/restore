@@ -11,7 +11,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return "<h1>RESTful API service for order transaction</h1>";
+        return "RESTful API service for order transaction";
     }
     
     /**

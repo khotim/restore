@@ -6,22 +6,21 @@ use yii\db\ActiveRecord;
 use yii\web\Link; // represents a link object as defined in JSON Hypermedia API Language.
 use yii\web\Linkable;
 use yii\helpers\Url;
-use yii\web\IdentityInterface;
 
 /**
  * User model
  */
-class User extends \restore\models\User implements Linkable, IdentityInterface
+class User extends \restore\models\User implements Linkable
 {
     /**
      * @inheritdoc
      */
     public function rules()
     {
-        return [
+        return array_merge(parent::rules(), [
             [['name', 'email'], 'required'],
             [['name', 'email'], 'string', 'max' => 255],
-        ];
+        ]);
     }
     
     // list every field available to end point
@@ -50,9 +49,7 @@ class User extends \restore\models\User implements Linkable, IdentityInterface
     public function getLinks()
     {
         return [
-            Link::REL_SELF => Url::to(['user/view', 'id' => $this->id], true),
-            'edit' => Url::to(['user/view', 'id' => $this->id], true),
-            'index' => Url::to('users', true),
+            Link::REL_SELF => Url::to(['site/profile'], true),
         ];
     }
     
@@ -66,7 +63,7 @@ class User extends \restore\models\User implements Linkable, IdentityInterface
      */
     public function getCreatedAt()
     {
-        return $this->created_at ? Yii::$app->formatter->asDate($this->created_at, 'php:Y-m-d H:i:s') : '-';
+        return $this->created_at ? Yii::$app->formatter->asDate($this->created_at, 'php:Y-m-d H:i:s') : '';
     }
     
     /**
