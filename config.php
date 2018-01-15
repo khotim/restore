@@ -87,8 +87,21 @@ return [
                         'PUT {id}' => 'create',
                         'GET {id}' => 'view',
                     ]
-                ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/checkout'],
+                    'patterns' => [
+                        'GET' => 'index',
+                        'POST' => 'create',
+                        'GET payments' => 'payment',
+                        'POST payments/{id}' => 'payment-create',
+                        '{id}' => 'options',
+                        '' => 'options'
+                    ]
+                ],
             ]
         ]
-    ]
+    ],
+    'params' => ['uploadDir' => __DIR__ . '/web/uploads']
 ];
