@@ -15,6 +15,7 @@ class Order extends ActiveRecord
     const STATUS_PAID = 2;
     const STATUS_CANCELED = 3;
     const STATUS_SHIPPED = 4;
+    const STATUS_CLOSED = 5;
     
     const PAYMENT_TRANSFER = 1;
     
@@ -211,6 +212,8 @@ class Order extends ActiveRecord
                 return 'Canceled';
             case self::STATUS_SHIPPED:
                 return 'Shipped';
+            case self::STATUS_CLOSED:
+                return 'Closed';
             default:
                 return '';
         }

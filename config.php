@@ -25,6 +25,10 @@ return [
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8',
+            // Schema cache options (for production environment)
+            //~ 'enableSchemaCache' => true,
+            //~ 'schemaCacheDuration' => 60,
+            //~ 'schemaCache' => 'cache'
         ],
         'request' => [
             'parsers' => [
@@ -96,6 +100,17 @@ return [
                         'POST' => 'create',
                         'GET payments' => 'payment',
                         'POST payments/{id}' => 'payment-create',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/admin/order',
+                    'patterns' => [
+                        'GET' => 'index',
+                        'GET {id}' => 'view',
+                        'PUT cancel/{id}' => 'cancel',
+                        'PUT close/{id}' => 'close',
+                        'POST shipment' => 'shipment'
                     ]
                 ],
             ]
