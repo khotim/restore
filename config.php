@@ -2,6 +2,8 @@
 
 use yii\web\Response;
 
+$db = require(__DIR__ . '/db.php');
+
 return [
     'id' => 'restore',
     // the basePath of the application will be the app directory
@@ -19,17 +21,7 @@ return [
         'v1' => ['class' => 'api\v1\Module']
     ],
     'components' => [
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=restore',
-            'username' => 'root',
-            'password' => '',
-            'charset' => 'utf8',
-            // Schema cache options (for production environment)
-            //~ 'enableSchemaCache' => true,
-            //~ 'schemaCacheDuration' => 60,
-            //~ 'schemaCache' => 'cache'
-        ],
+        'db' => $db,
         'request' => [
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser'
