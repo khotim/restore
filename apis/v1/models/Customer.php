@@ -42,16 +42,46 @@ class Customer extends ActiveRecord
         ];
     }
     
-    /*************
-     * Relations *
-     *************/
+    // list every field available to end point
+    public function fields()
+    {
+        return [
+            // field name is the same as the attribute name
+            'id',
+            'name',
+            'phone',
+            'email',
+            'address',
+            // Field name 'created_at', the returned value is defined in '[[createdAt]]'
+            'created_at' => function ($model) {
+                return $this->createdAt;
+            },
+            // Field name 'updated_at', the returned value is defined in '[[updatedAt]]'
+            'updated_at' => function ($model) {
+                return $this->updatedAt;
+            }
+        ];
+    }
+    
+    /*********
+     * Misc. *
+     *********/
     
     /**
-     * Returns product name.
-     * @return string
+     * Formats [[created_at]] as php date Y-m-d H:i:s.
+     * @return string The formatted version of [[created_at]]
      */
-    public function getProductText()
+    public function getCreatedAt()
     {
-        return $this->product ? $this->product->name : '';
+        return $this->created_at ? Yii::$app->formatter->asDate($this->created_at, 'php:Y-m-d H:i:s') : '';
+    }
+    
+    /**
+     * Formats [[updated_at]] as php date Y-m-d H:i:s.
+     * @return string The formatted version of [[updated_at]]
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updated_at ? Yii::$app->formatter->asDate($this->updated_at, 'php:Y-m-d H:i:s') : '';
     }
 }

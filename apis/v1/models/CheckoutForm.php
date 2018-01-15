@@ -24,8 +24,8 @@ class CheckoutForm extends Model
     public function rules()
     {
         return [
-            // name, phone, email, address are required field when submitting order
-            [['name','phone','email', 'address'],'required'],
+            // name, phone, email, address are required fields when submitting order
+            [['name', 'phone', 'email', 'address'],'required'],
             [['name','email'], 'string', 'max' => 255],
             ['phone', 'string', 'max' => 15],
             ['address', 'string'],

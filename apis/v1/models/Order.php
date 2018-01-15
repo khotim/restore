@@ -4,14 +4,11 @@ namespace api\v1\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\web\Link; // represents a link object as defined in JSON Hypermedia API Language.
-use yii\web\Linkable;
-use yii\helpers\Url;
 
 /**
  * Order model
  */
-class Order extends ActiveRecord implements Linkable
+class Order extends ActiveRecord
 {
     const STATUS_DRAFT = 0;
     const STATUS_SUBMITTED = 1;
@@ -122,23 +119,14 @@ class Order extends ActiveRecord implements Linkable
             'status' => function ($model) {
                 return $model->statusText;
             },
+            // list of order lines
             'lines' => function ($model) {
                 return $model->lines;
             },
-        ];
-    }
-    
-    /*
-     * Returns information that allows clients to discover actions supported for this resources.
-     * @return array
-     */
-    public function getLinks()
-    {
-        return [
-            Link::REL_SELF => Url::to(['order/view', 'id' => $this->id], true),
-            'edit' => Url::to(['order/view', 'id' => $this->id], true),
-            'index' => Url::to('orders', true),
-            'cancel' => Url::to(['order/cancel', 'id' => $this->id], true),
+            // list of order shipments
+            'shipments' => function ($model) {
+                return $model->shipments;
+            },
         ];
     }
     
@@ -152,6 +140,14 @@ class Order extends ActiveRecord implements Linkable
     public function getLines()
     {
         return $this->hasMany(OrderLine::className(), ['order_id' => 'id'])->with('product')->inverseOf('order');
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getShipments()
+    {
+        return $this->hasMany(OrderShipment::className(), ['order_id' => 'id'])->inverseOf('order');
     }
     
     /**

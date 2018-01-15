@@ -60,10 +60,11 @@ class CheckoutController extends Controller
         $checkout = new CheckoutForm();
         $checkout->load(Yii::$app->getRequest()->getBodyParams(), '');
         
-        if ($checkout->submit()) {
+        if ($order = $checkout->submit()) {
             $response = Yii::$app->getResponse();
             $response->setStatusCode(201);
-            //~ $response->getHeaders()->set('Location', Url::toRoute(['order/view', 'id' => $checkout->id], true));
+            
+            return $order;
         } elseif (!$checkout->hasErrors()) {
             throw new ServerErrorHttpException('Failed to create the object for unknown reason.');
         }
@@ -94,10 +95,11 @@ class CheckoutController extends Controller
         $payment->id = $id;
         $payment->file = UploadedFile::getInstanceByName('file');
         
-        if ($payment->submit()) {
+        if ($order = $payment->submit()) {
             $response = Yii::$app->getResponse();
             $response->setStatusCode(201);
-            //~ $response->getHeaders()->set('Location', Url::toRoute(['order/view', 'id' => $checkout->id], true));
+            
+            return $order;
         } elseif (!$payment->hasErrors()) {
             throw new ServerErrorHttpException('Failed to create the object for unknown reason.');
         }
