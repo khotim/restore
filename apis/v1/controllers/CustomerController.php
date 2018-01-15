@@ -178,6 +178,10 @@ class CustomerController extends Controller
             ->andWhere(['<>', 'status_id', Order::STATUS_DRAFT])
             ->one();
         
-        return $order ?: new NotFoundHttpException("Order transaction ({$id}) is not available.");
+        if ($order !== null) {
+            return $order;
+        }
+        
+        throw new NotFoundHttpException("Order transaction ({$id}) is not available.");
     }
 }

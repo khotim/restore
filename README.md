@@ -876,6 +876,667 @@ Error Response
 ### Order Administration
 
 #### Order listing
+Will only display paid, shipped, or closed orders.
+
 ```javascript
 GET /v1/admin/orders?access_token=bc7ad31601acb6bb16d026efa524e33c
+```
+
+Success Response
+```javascript
+{
+  "success": true,
+  "data": {
+    "items": [{
+      "id": 13,
+      "ordered_at": "2018-01-15 23:47:26",
+      "customer": {
+        "id": 3,
+        "name": "Customer A",
+        "phone": "085",
+        "email": "customer@timicron.com",
+        "address": "\"Jl.\"",
+        "created_at": "2018-01-15 23:47:25",
+        "updated_at": "2018-01-15 23:47:25"
+      },
+      "coupon": "",
+      "payment": "Bank Transfer",
+      "payment_proof": "/server/root/web/uploads/payment-proof.png",
+      "discount_percentage": 0,
+      "discount_amount": 0,
+      "sub_total": "599960",
+      "grand_total": "599960",
+      "status": "Paid",
+      "lines": [{
+        "id": 14,
+        "product": "Product A",
+        "quantity": 1,
+        "price": 56700,
+        "amount": 56700
+      }, {
+        "id": 15,
+        "product": "B",
+        "quantity": 1,
+        "price": 543260,
+        "amount": 543260
+      }],
+      "shipments": []
+    }],
+    "_links": {
+      "self": {
+        "href": "http://localhost:8080/v1/admin/orders?access_token=bc7ad31601acb6bb16d026efa524e33c&page=1"
+      }
+    },
+    "_meta": {
+      "totalCount": 3,
+      "pageCount": 1,
+      "currentPage": 1,
+      "perPage": 20
+    }
+  }
+}
+```
+
+Empty Response
+```javascript
+{
+  "success": true,
+  "data": {
+    "items": [],
+    "_links": {
+      "self": {
+        "href": "http://localhost:8080/v1/admin/orders?access_token=bc7ad31601acb6bb16d026efa524e33c&page=1"
+      }
+    },
+    "_meta": {
+      "totalCount": 0,
+      "pageCount": 0,
+      "currentPage": 1,
+      "perPage": 20
+    }
+  }
+}
+```
+
+#### Order Detail
+```javascript
+GET /v1/admin/orders/13?access_token=bc7ad31601acb6bb16d026efa524e33c
+```
+
+Success Response
+```javascript
+{
+  "success": true,
+  "data": {
+    "id": 13,
+    "ordered_at": "2018-01-15 23:47:26",
+    "customer": {
+      "id": 3,
+      "name": "Customer A",
+      "phone": "085",
+      "email": "customer@timicron.com",
+      "address": "\"Jl.\"",
+      "created_at": "2018-01-15 23:47:25",
+      "updated_at": "2018-01-15 23:47:25"
+    },
+    "coupon": "",
+    "payment": "Bank Transfer",
+    "payment_proof": "/path/to/root/web/uploads/payment-proof.png",
+    "discount_percentage": 0,
+    "discount_amount": 0,
+    "sub_total": "599960",
+    "grand_total": "599960",
+    "status": "Paid",
+    "lines": [{
+      "id": 14,
+      "product": "Product A",
+      "quantity": 1,
+      "price": 56700,
+      "amount": 56700
+    }, {
+      "id": 15,
+      "product": "B",
+      "quantity": 1,
+      "price": 543260,
+      "amount": 543260
+    }],
+    "shipments": []
+  }
+}
+```
+
+Error Response
+```javascript
+{
+  "success": false,
+  "data": {
+    "name": "Not Found",
+    "message": "Order transaction (13) is not available",
+    "code": 0,
+    "status": 404
+  }
+}
+```
+
+#### Cancel Order
+```javascript
+PUT /v1/admin/orders/cancel/13
+```
+
+Success Response
+```javascript
+{
+  "success": true,
+  "data": {
+    "id": 13,
+    "ordered_at": "2018-01-15 23:47:26",
+    "customer": {
+      "id": 3,
+      "name": "Customer A",
+      "phone": "085",
+      "email": "customer@timicron.com",
+      "address": "\"Jl.\"",
+      "created_at": "2018-01-15 23:47:25",
+      "updated_at": "2018-01-15 23:47:25"
+    },
+    "coupon": "",
+    "payment": "Bank Transfer",
+    "payment_proof": "/path/to/root/web/uploads/payment-proof.png",
+    "discount_percentage": 0,
+    "discount_amount": 0,
+    "sub_total": "599960",
+    "grand_total": "599960",
+    "status": "Closed",
+    "lines": [{
+      "id": 14,
+      "product": "Product A",
+      "quantity": 1,
+      "price": 56700,
+      "amount": 56700
+    }, {
+      "id": 15,
+      "product": "B",
+      "quantity": 1,
+      "price": 543260,
+      "amount": 543260
+    }],
+    "shipments": []
+  }
+}
+```
+
+Error Response
+```javascript
+{
+  "success": false,
+  "data": {
+    "name": "Not Found",
+    "message": "Order transaction (13) is not available",
+    "code": 0,
+    "status": 404
+  }
+}
+```
+
+#### Close an Order
+```javascript
+PUT /v1/admin/orders/close/1
+```
+
+Success Response
+```javascript
+{
+  "success": true,
+  "data": {
+    "id": 13,
+    "ordered_at": "2018-01-15 23:47:26",
+    "customer": {
+      "id": 3,
+      "name": "Customer A",
+      "phone": "085",
+      "email": "customer@timicron.com",
+      "address": "\"Jl.\"",
+      "created_at": "2018-01-15 23:47:25",
+      "updated_at": "2018-01-15 23:47:25"
+    },
+    "coupon": "",
+    "payment": "Bank Transfer",
+    "payment_proof": "/path/to/root/web/uploads/payment-proof.png",
+    "discount_percentage": 0,
+    "discount_amount": 0,
+    "sub_total": "599960",
+    "grand_total": "599960",
+    "status": "Closed",
+    "lines": [{
+      "id": 14,
+      "product": "Product A",
+      "quantity": 1,
+      "price": 56700,
+      "amount": 56700
+    }, {
+      "id": 15,
+      "product": "B",
+      "quantity": 1,
+      "price": 543260,
+      "amount": 543260
+    }],
+    "shipments": []
+  }
+}
+```
+
+Error Response
+```javascript
+{
+  "success": false,
+  "data": {
+    "name": "Not Found",
+    "message": "Order transaction (13) is not available",
+    "code": 0,
+    "status": 404
+  }
+}
+```
+
+#### Order Shipping Information
+```javascript
+POST /v1/admin/orders/shipment
+{
+    "order":13,
+    "logistic":1,
+    "shipped_at":"2018-01-31 10:23",
+}
+```
+
+Success Response
+```javascript
+{
+  "success": true,
+  "data": {
+    "id": 13,
+    "ordered_at": "2018-01-15 23:47:26",
+    "customer": {
+      "id": 3,
+      "name": "Customer A",
+      "phone": "085",
+      "email": "customer@timicron.com",
+      "address": "\"Jl.\"",
+      "created_at": "2018-01-15 23:47:25",
+      "updated_at": "2018-01-15 23:47:25"
+    },
+    "coupon": "",
+    "payment": "Bank Transfer",
+    "payment_proof": "/path/to/root/web/uploads/payment-proof.png",
+    "discount_percentage": 0,
+    "discount_amount": 0,
+    "sub_total": "599960",
+    "grand_total": "599960",
+    "status": "Shipped",
+    "lines": [{
+      "id": 14,
+      "product": "Product A",
+      "quantity": 1,
+      "price": 56700,
+      "amount": 56700
+    }, {
+      "id": 15,
+      "product": "B",
+      "quantity": 1,
+      "price": 543260,
+      "amount": 543260
+    }],
+    "shipments": [{
+      "id": 2,
+      "code": "8d8103e7",
+      "logistic": {
+        "id": 1,
+        "name": "Logistic A",
+        "phone": "085",
+        "address": "Jakarta",
+        "created": "2018-01-12 20:48:23",
+        "updated": "2018-01-12 20:48:23",
+        "_links": {
+          "self": {
+            "href": "http://localhost:8080/v1/admin/logistics/1"
+          },
+          "edit": {
+            "href": "http://localhost:8080/v1/admin/logistics/1"
+          },
+          "delete": {
+            "href": "http://localhost:8080/v1/admin/logistics/1"
+          },
+          "index": {
+            "href": "http://localhost:8080/admin/logistics"
+          }
+        }
+      },
+      "shipped_at": "2018-01-31 10:23",
+      "created_at": "2018-01-16 00:37:30",
+      "updated_at": "2018-01-16 00:37:30"
+    }]
+  }
+}
+```
+
+Error Response
+```javascript
+{
+  "success": false,
+  "data": [{
+    "field": "order",
+    "message": "Order cannot be blank."
+  }, {
+    "field": "logistic",
+    "message": "Logistic cannot be blank."
+  }, {
+    "field": "shipped_at",
+    "message": "Shipped At cannot be blank."
+  }]
+}
+```
+```javascript
+{
+  "success": false,
+  "data": [{
+    "field": "order",
+    "message": "Order transaction (13) is not available."
+  }]
+}
+```
+
+-----
+
+Customers may review their order history. To do so, they need an access token specifically given to them based on their registered email.
+
+#### Obtain Authorization Code
+
+Authorization code valid for 5 minutes.
+```javascript
+POST /v1/customers/authorize
+{
+    "email":"customer@timicron.com"
+}
+```
+
+Success Response
+```javascript
+{
+  "success": true,
+  "data": {
+    "authorization_code": "c19da43b5d1f8c12c8aa57cf6352f0cc",
+    "expired_at": "2018-01-16 00:52:47"
+  }
+}
+```
+
+Error Response
+```javascript
+{
+  "success": false,
+  "data": {
+    "name": "Not Found",
+    "message": "{email} : Email address is not available!",
+    "code": 0,
+    "status": 404
+  }
+}
+```
+
+Authorization code is used to obtain access token which is what the customer needed.
+
+#### Obtain Access Token
+Access token valid for 60 days.
+```javascript
+POST /v1/customers/accesstoken
+{
+    "auth":"c19da43b5d1f8c12c8aa57cf6352f0cc"
+}
+```
+
+Success Response
+```javascript
+{
+  "success": true,
+  "data": {
+    "access_token": "2bc0635692e741280f127a78e648c67d",
+    "expired_at": "2018-03-17 00:52:17"
+  }
+}
+```
+
+Error Response
+```javascript
+{
+  "success": false,
+  "data": {
+    "name": "Not Found",
+    "message": "Invalid authorization code.",
+    "code": 0,
+    "status": 404
+  }
+}
+```
+
+#### Customer Profile
+
+View customer detail
+```javascript
+GET /v1/customers?access_token=2bc0635692e741280f127a78e648c67d
+```
+
+Success Response
+```javascript
+{
+  "success": true,
+  "data": {
+    "id": 3,
+    "name": "Customer A",
+    "phone": "085",
+    "email": "customer@timicron.com",
+    "address": "\"Jl.\"",
+    "created_at": "2018-01-15 23:47:25",
+    "updated_at": "2018-01-16 00:52:17"
+  }
+}
+```
+
+Error Response
+```javascript
+{
+  "success": false,
+  "data": {
+    "name": "Unauthorized",
+    "message": "Unauthorized access!",
+    "code": 0,
+    "status": 401
+  }
+}
+```
+
+#### Customer Order History
+```javascript
+GET /v1/customers/orders?access_token=2bc0635692e741280f127a78e648c67d
+```
+
+Success Response
+```javascript
+{
+  "success": true,
+  "data": [{
+    "id": 13,
+    "ordered_at": "2018-01-15 23:47:26",
+    "customer": {
+      "id": 3,
+      "name": "Customer A",
+      "phone": "085",
+      "email": "customer@timicron.com",
+      "address": "\"Jl.\"",
+      "created_at": "2018-01-15 23:47:25",
+      "updated_at": "2018-01-16 00:52:17"
+    },
+    "coupon": "",
+    "payment": "Bank Transfer",
+    "payment_proof": "/path/to/root/web/uploads/payment-proof.png",
+    "discount_percentage": 0,
+    "discount_amount": 0,
+    "sub_total": "599960",
+    "grand_total": "599960",
+    "status": "Shipped",
+    "lines": [{
+      "id": 14,
+      "product": "Product A",
+      "quantity": 1,
+      "price": 56700,
+      "amount": 56700
+    }, {
+      "id": 15,
+      "product": "B",
+      "quantity": 1,
+      "price": 543260,
+      "amount": 543260
+    }],
+    "shipments": [{
+      "id": 2,
+      "code": "8d8103e7",
+      "logistic": {
+        "id": 1,
+        "name": "Logistic A",
+        "phone": "085",
+        "address": "Jakarta",
+        "created": "2018-01-12 20:48:23",
+        "updated": "2018-01-12 20:48:23",
+        "_links": {
+          "self": {
+            "href": "http://localhost:8080/v1/admin/logistics/1"
+          },
+          "edit": {
+            "href": "http://localhost:8080/v1/admin/logistics/1"
+          },
+          "delete": {
+            "href": "http://localhost:8080/v1/admin/logistics/1"
+          },
+          "index": {
+            "href": "http://localhost:8080/admin/logistics"
+          }
+        }
+      },
+      "shipped_at": "2018-01-31 10:23",
+      "created_at": "2018-01-16 00:37:30",
+      "updated_at": "2018-01-16 00:37:30"
+    }]
+  }]
+}
+```
+
+Error Response
+```javascript
+{
+  "success": false,
+  "data": {
+    "name": "Unauthorized",
+    "message": "Unauthorized access!",
+    "code": 0,
+    "status": 401
+  }
+}
+```
+
+#### Customer Order Detail
+```javascript
+GET /v1/customers/orders/13?access_token=2bc0635692e741280f127a78e648c67d
+```
+
+Success Response
+```javascript
+{
+  "success": true,
+  "data": {
+    "id": 13,
+    "ordered_at": "2018-01-15 23:47:26",
+    "customer": {
+      "id": 3,
+      "name": "Customer A",
+      "phone": "085",
+      "email": "customer@timicron.com",
+      "address": "\"Jl.\"",
+      "created_at": "2018-01-15 23:47:25",
+      "updated_at": "2018-01-16 00:52:17"
+    },
+    "coupon": "",
+    "payment": "Bank Transfer",
+    "payment_proof": "/path/to/root/web/uploads/payment-proof.png",
+    "discount_percentage": 0,
+    "discount_amount": 0,
+    "sub_total": "599960",
+    "grand_total": "599960",
+    "status": "Shipped",
+    "lines": [{
+      "id": 14,
+      "product": "Product A",
+      "quantity": 1,
+      "price": 56700,
+      "amount": 56700
+    }, {
+      "id": 15,
+      "product": "B",
+      "quantity": 1,
+      "price": 543260,
+      "amount": 543260
+    }],
+    "shipments": [{
+      "id": 2,
+      "code": "8d8103e7",
+      "logistic": {
+        "id": 1,
+        "name": "Logistic A",
+        "phone": "085",
+        "address": "Jakarta",
+        "created": "2018-01-12 20:48:23",
+        "updated": "2018-01-12 20:48:23",
+        "_links": {
+          "self": {
+            "href": "http://localhost:8080/v1/admin/logistics/1"
+          },
+          "edit": {
+            "href": "http://localhost:8080/v1/admin/logistics/1"
+          },
+          "delete": {
+            "href": "http://localhost:8080/v1/admin/logistics/1"
+          },
+          "index": {
+            "href": "http://localhost:8080/admin/logistics"
+          }
+        }
+      },
+      "shipped_at": "2018-01-31 10:23",
+      "created_at": "2018-01-16 00:37:30",
+      "updated_at": "2018-01-16 00:37:30"
+    }]
+  }
+}
+```
+
+Error Response
+```javascript
+{
+  "success": false,
+  "data": {
+    "name": "Unauthorized",
+    "message": "Unauthorized access!",
+    "code": 0,
+    "status": 401
+  }
+}
+```
+
+```javascript
+{
+  "success": false,
+  "data": {
+    "name": "Not Found",
+    "message": "Order transaction (14) is not available.",
+    "code": 0,
+    "status": 404
+  }
+}
 ```
