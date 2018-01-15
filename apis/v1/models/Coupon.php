@@ -100,9 +100,10 @@ class Coupon extends ActiveRecord implements Linkable
     public function getLinks()
     {
         return [
-            Link::REL_SELF => Url::to(['coupon/view', 'id' => $this->id], true),
-            'edit' => Url::to(['coupon/view', 'id' => $this->id], true),
-            'index' => Url::to('coupons', true),
+            Link::REL_SELF => Url::to(['admin/coupon/view', 'id' => $this->id], true),
+            'edit' => Url::to(['admin/coupon/view', 'id' => $this->id], true),
+            'delete' => Url::to(['admin/coupon/view', 'id' => $this->id], true),
+            'index' => Url::to('admin/coupons', true),
         ];
     }
     

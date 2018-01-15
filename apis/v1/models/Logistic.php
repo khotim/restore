@@ -69,9 +69,10 @@ class Logistic extends ActiveRecord implements Linkable
     public function getLinks()
     {
         return [
-            Link::REL_SELF => Url::to(['logistic/view', 'id' => $this->id], true),
-            'edit' => Url::to(['logistic/view', 'id' => $this->id], true),
-            'index' => Url::to('logistics', true),
+            Link::REL_SELF => Url::to(['admin/logistic/view', 'id' => $this->id], true),
+            'edit' => Url::to(['admin/logistic/view', 'id' => $this->id], true),
+            'delete' => Url::to(['admin/logistic/view', 'id' => $this->id], true),
+            'index' => Url::to('admin/logistics', true),
         ];
     }
     

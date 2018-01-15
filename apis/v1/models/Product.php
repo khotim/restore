@@ -72,9 +72,10 @@ class Product extends ActiveRecord implements Linkable
     public function getLinks()
     {
         return [
-            Link::REL_SELF => Url::to(['product/view', 'id' => $this->id], true),
-            'edit' => Url::to(['product/view', 'id' => $this->id], true),
-            'index' => Url::to('products', true),
+            Link::REL_SELF => Url::to(['admin/product/view', 'id' => $this->id], true),
+            'edit' => Url::to(['admin/product/view', 'id' => $this->id], true),
+            'delete' => Url::to(['admin/product/view', 'id' => $this->id], true),
+            'index' => Url::to('admin/products', true),
         ];
     }
     
