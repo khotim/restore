@@ -91,6 +91,10 @@ class Order extends ActiveRecord implements Linkable
         return [
             // field name is the same as the attribute name
             'id',
+            // field name is "ordered_at", the returned value is its formatted version as defined in [[orderedAt]]
+            'ordered_at' => function ($model) {
+                return $model->orderedAt;
+            },
             // field name is "customer", the returned value is its modified version as defined in [[customerText]]
             'customer' => function ($model) {
                 return $model->customer;
@@ -106,13 +110,17 @@ class Order extends ActiveRecord implements Linkable
             'payment_proof',
             'discount_percentage',
             'discount_amount',
+            // field name is "sub_total", the returned value is defined in [[subTotal]]
+            'sub_total' => function ($model) {
+                return $model->subTotal;
+            },
+            // field name is "grand_total", the returned value is defined in [[grandTotal]]
+            'grand_total' => function ($model) {
+                return $model->grandTotal;
+            },
             // field name is "status", the returned value is defined in [[statusText]]
             'status' => function ($model) {
                 return $model->statusText;
-            },
-            // field name is "ordered_at", the returned value is its formatted version as defined in [[orderedAt]]
-            'ordered_at' => function ($model) {
-                return $model->orderedAt;
             },
             'lines' => function ($model) {
                 return $model->lines;
@@ -230,5 +238,30 @@ class Order extends ActiveRecord implements Linkable
         $paymentList = self::getPaymentList();
         
         return array_key_exists($this->payment_id, $paymentList) ? $paymentList[$this->payment_id] : '';
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSubTotal()
+    {
+        return $this->getLines()->sum('price * quantity');
+    }
+    
+    /**
+     * @return string
+     */
+    public function getGrandTotal()
+    {
+        $total = $this->subTotal;
+        
+        if ($this->coupon) {
+            $amount = $this->subTotal - $this->discount_amount;
+            $percentage = $this->subTotal - ($this->subTotal * $this->discount_percentage / 100);
+            // total minus whichever the least
+            $total -= $amount <= $percentage ? $amount  : $percentage;
+        }
+        
+        return $total;
     }
 }
