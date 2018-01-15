@@ -69,6 +69,22 @@ class Order extends ActiveRecord implements Linkable
         return true;
     }
     
+    /**
+     * Overrides parent implementaion of parent::afterSave() to performs operation(s) after saving the record.
+     * @return boolean
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        
+        if (!$insert && $this->status_id == self::STATUS_SUBMITTED) {
+            foreach ($this->lines as $line) {
+                // Decreases product quantity after order submitted
+                $line->product->updateCounters(['quantity' => -1]);
+            }
+        }
+    }
+    
     // list every field available to end point
     public function fields()
     {
