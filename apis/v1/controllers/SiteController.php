@@ -30,7 +30,7 @@ class SiteController extends Controller
                 HttpBearerAuth::className(),
                 ['class' => QueryParamAuth::className(), 'tokenParam' => 'access_token']
             ],
-            'only' => ['profile']
+            'only' => ['profile', 'logout']
         ];
         
         $behaviors['verbs'] = [
@@ -160,10 +160,9 @@ class SiteController extends Controller
             $access_token = $request->getQueryParam('access_token');
         }
         
-        
-        $model = AccessToken::findOne(['token' => $access_token]);
-        
-        if ($model->delete()) {
+        if ($model = AccessToken::findOne(['token' => $access_token])) {
+            $model->delete();
+            
             return "Logged out successfully.";
         }
         
