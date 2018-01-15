@@ -149,12 +149,17 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
-        $headers = Yii::$app->getRequest()->getHeaders();
-        $access_token = $headers->get('x-access-token');
+        $request = Yii::$app->getRequest();
+        $authHeader = $request->getHeaders()->get('Authorization');
         
-        if(!$access_token){
-            $access_token = Yii::$app->getRequest()->getQueryParam('access_token');
+        if ($authHeader !== null && preg_match('/^Bearer\s+(.*?)$/', $authHeader, $matches)) {
+            $access_token = $matches[1];
         }
+        
+        if (!$access_token) {
+            $access_token = $request->getQueryParam('access_token');
+        }
+        
         
         $model = AccessToken::findOne(['token' => $access_token]);
         
