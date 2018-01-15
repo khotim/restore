@@ -113,6 +113,17 @@ return [
                         'POST shipment' => 'shipment'
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/customer',
+                    'patterns' => [
+                        'GET' => 'index',
+                        'POST authorize' => 'authorize',
+                        'POST accesstoken' => 'accesstoken',
+                        'GET orders' => 'order',
+                        'GET orders/{id}' => 'order-detail'
+                    ]
+                ],
             ]
         ]
     ],

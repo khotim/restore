@@ -94,7 +94,7 @@ class SiteController extends Controller
         $authCode = AuthorizationCode::isValid($authParam);
         
         if (!$authCode) {
-            throw new NotFoundHttpException("Invalid authorization code..");
+            throw new NotFoundHttpException("Invalid authorization code.");
         }
         
         $model = new AccessToken();
@@ -156,7 +156,7 @@ class SiteController extends Controller
             $access_token = $matches[1];
         }
         
-        if (!$access_token) {
+        if (!isset($access_token)) {
             $access_token = $request->getQueryParam('access_token');
         }
         

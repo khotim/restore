@@ -68,6 +68,24 @@ class Customer extends ActiveRecord
      *********/
     
     /**
+     * Formats [[auth_expired]] as php date Y-m-d H:i:s.
+     * @return string The formatted version of [[auth_expired]]
+     */
+    public function getAuthExpired()
+    {
+        return $this->auth_expired ? Yii::$app->formatter->asDate($this->auth_expired, 'php:Y-m-d H:i:s') : '';
+    }
+    
+    /**
+     * Formats [[token_expired]] as php date Y-m-d H:i:s.
+     * @return string The formatted version of [[token_expired]]
+     */
+    public function getTokenExpired()
+    {
+        return $this->token_expired ? Yii::$app->formatter->asDate($this->token_expired, 'php:Y-m-d H:i:s') : '';
+    }
+    
+    /**
      * Formats [[created_at]] as php date Y-m-d H:i:s.
      * @return string The formatted version of [[created_at]]
      */

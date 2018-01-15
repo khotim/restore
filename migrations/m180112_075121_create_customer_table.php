@@ -25,6 +25,10 @@ class m180112_075121_create_customer_table extends Migration
             'email' => $this->string()->notNull(),
             'phone' => $this->string(15)->notNull(),
             'address' => $this->text()->notNull(),
+            'auth_code' => $this->string(32)->notNull(),
+            'auth_expired' => $this->integer()->notNull(),
+            'token_code' => $this->string(32)->notNull(),
+            'token_expired' => $this->integer()->notNull(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull()
         ], $tableOptions);
