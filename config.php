@@ -82,7 +82,7 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'v1/catalogue',
-                    'extraPatterns' => [
+                    'patterns' => [
                         'GET' => 'index',
                         'PUT {id}' => 'create',
                         'GET {id}' => 'view',
@@ -96,8 +96,6 @@ return [
                         'POST' => 'create',
                         'GET payments' => 'payment',
                         'POST payments/{id}' => 'payment-create',
-                        '{id}' => 'options',
-                        '' => 'options'
                     ]
                 ],
             ]
