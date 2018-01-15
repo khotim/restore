@@ -45,11 +45,18 @@ class CheckoutController extends Controller
      */
     public function actionIndex()
     {
-        return Order::find()->where([
-            'ip_address' => Yii::$app->request->userIp,
-            'agent' => Yii::$app->request->userAgent,
+        $request = Yii::$app->request;
+        $order = Order::findOne([
+            'ip_address' => $request->userIp,
+            'agent' => $request->userAgent,
             'status_id' => Order::STATUS_DRAFT
-        ])->one();
+        ]);
+        
+        if ($order !== null) {
+            return $order;
+        }
+        
+        throw new NotFoundHttpException('Cart is empty!');
     }
     
     /**
